@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ödeme Bilgileri</title>
+  <style>
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .card { background: #ffffff; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px 24px; width: 100%; max-width: 360px; text-align: center; }
+    .icon-box { width: 44px; height: 6px; background: #cbd5e1; border-radius: 4px; margin: 0 auto 20px; }
+    h2 { font-size: 20px; color: #1e293b; font-weight: 700; margin-bottom: 24px; }
+    .field-group { margin-bottom: 20px; text-align: left; }
+    .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 6px; display: block; }
+    .value { font-size: 15px; font-weight: 600; color: #334155; word-break: break-all; margin-bottom: 10px; background: #f1f5f9; padding: 10px 12px; border-radius: 10px; }
+    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: #2f3640; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; }
+    .btn:active { transform: scale(0.98); }
+    .btn.copied { background: #10b981; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="icon-box"></div>
+    <h2>Ödeme Bilgileri</h2>
+
+    <!-- İSİM ALANI -->
+    <div class="field-group">
+      <span class="label">Alıcı / İsim Soyisim</span>
+      <div class="value" id="nameText">Yükleniyor...</div>
+      <button class="btn" id="copyNameBtn" onclick="copyValue('nameText', 'copyNameBtn', 'İsim Soyismi Kopyala')">
+        İsim Soyismi Kopyala
+      </button>
+    </div>
+
+    <!-- IBAN ALANI -->
+    <div class="field-group">
+      <span class="label">IBAN</span>
+      <div class="value" id="ibanText">Yükleniyor...</div>
+      <button class="btn" id="copyIbanBtn" onclick="copyValue('ibanText', 'copyIbanBtn', 'IBAN\'ı Kopyala')">
+        IBAN'ı Kopyala
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // URL'deki parametreleri çeker (Örn: ?isim=Ahmet+Yilmaz&iban=TR9300...)
+    const params = new URLSearchParams(window.location.search);
+    const isim = params.get('isim') || 'Dükkan Sahibi';
+    const iban = params.get('iban') || 'TR000000000000000000000000';
+
+    document.getElementById('nameText').innerText = isim;
+    document.getElementById('ibanText').innerText = iban;
+
+    function copyValue(elementId, btnId, originalText) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById(btnId);
+        btn.innerText = "✓ Kopyalandı";
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
